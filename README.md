@@ -8,3 +8,8 @@ pipx install poetry
 poetry install
 poetry env activate
 ```
+Pinecone Setup
+```
+Create Index "dev-archive"
+Create Namespace "case-studies"
+```

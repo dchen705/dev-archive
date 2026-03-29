@@ -1,2 +1,4 @@
 OPENAI_API_KEY=[your_OPENAPI_key]
 PINECONE_API_KEY=[your_pinecone_key]
+PINECONE_INDEX_NAME=dev-archive
+PINECONE_INDEX_NAMESPACE=case-studies

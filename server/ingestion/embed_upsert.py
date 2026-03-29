@@ -7,8 +7,6 @@ from pinecone import Pinecone
 load_dotenv()
 
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-if not pc or not os.getenv("PINECONE_API_KEY"):
-   raise Exception()
 
 index_name = "dev-archive"
 if not pc.has_index(index_name):
