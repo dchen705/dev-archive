@@ -5,7 +5,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export async function getThreads(): Promise<{ session_id: string; threads: any[] }> {
+export async function getThreads(): Promise<{ session_id: string; thread_ids: string[] }> {
   const { data } = await api.get('/threads');
   return data;
 }

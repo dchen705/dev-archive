@@ -20,8 +20,20 @@ def get_threads(response: Response, session_id: str = Cookie(default=None)):
       session_id = str(uuid.uuid4())
       response.set_cookie(key="session_id", value=session_id)
 
-    threads = db.get_session_threads(session_id)
-    return {"session_id": session_id, "threads": threads}
+    thread_ids = db.get_session_threads(session_id)
+    return {"session_id": session_id, "thread_ids": thread_ids}
+
+@app.get("/api/thread/{thread_id}")
+def get_thread(thread_id: str, session_id: str = Cookie(default=None)):
+    if not session_id:
+        raise HTTPException(status_code=401, detail="No session")
+
+    messages = db.get_thread_messages(thread_id)
+
+    if not messages:
+        raise HTTPException(status_code=404, detail="Thread not found")
+
+    return {"messages": messages}
 
 @app.post("/api/query")
 def save_query_and_response(body: MessageRequest, session_id: str = Cookie(default=None)):

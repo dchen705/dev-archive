@@ -1,7 +1,6 @@
 import sqlite3
 import json
 from pathlib import Path
-from typing import List, Dict, Any
 
 DB_PATH = Path(__file__).parent / "chat_history.db"
 
@@ -33,14 +32,19 @@ class Database:
             "SELECT messages FROM threads WHERE id = ?", (thread_id,)
         )
         row = cursor.fetchone()
-        return json.loads(row[0]) if row else []
+        if not row:
+            return []
+        messages = json.loads(row[0])
+        if messages and messages[0].get("role") in ("developer", "system"):
+            messages = messages[1:]
+        return messages
 
-  def get_session_threads(self, session_id: str) -> List[Dict[str, Any]]:
+  def get_session_threads(self, session_id: str) -> list[int]:
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.execute(
             "SELECT id, created_at FROM threads WHERE session_id = ? ORDER BY created_at DESC",
             (session_id,)
         )
-        return [{"id": row[0], "created_at": row[1]} for row in cursor.fetchall()]
+        return [int(row[0]) for row in cursor.fetchall()]
 
 db = Database()
