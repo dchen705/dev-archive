@@ -5,6 +5,7 @@ RAG pipeline to query and analyze software engineering case studies
 ```
 cd server
 pipx install poetry
+poetry config virtualenvs.in-project true
 poetry install
 poetry env activate
 fastapi dev
