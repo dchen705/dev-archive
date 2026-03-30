@@ -15,7 +15,7 @@ SYSTEM_PROMPT = """You are a helpful assistant of Dev Archive, a RAG pipeline
 to help query and analyze software engineering case studies."""
 
 @app.get("/api/threads")
-def show_threads(response: Response, session_id: str = Cookie(default=None)):
+def get_threads(response: Response, session_id: str = Cookie(default=None)):
     if not session_id:
       session_id = str(uuid.uuid4())
       response.set_cookie(key="session_id", value=session_id)
@@ -23,8 +23,8 @@ def show_threads(response: Response, session_id: str = Cookie(default=None)):
     threads = db.get_session_threads(session_id)
     return {"session_id": session_id, "threads": threads}
 
-@app.post("/api/message")
-def send_message(body: MessageRequest, session_id: str = Cookie(default=None)):
+@app.post("/api/query")
+def save_query_and_response(body: MessageRequest, session_id: str = Cookie(default=None)):
     thread_id = body.thread_id
     message = body.message
 
@@ -55,5 +55,5 @@ def send_message(body: MessageRequest, session_id: str = Cookie(default=None)):
 
     db.save_thread(thread_id, session_id, thread_messages)
 
-    return {"thread_id": thread_id, "messages": thread_messages}
+    return {"thread_id": thread_id, "messages": llm_response}
 
