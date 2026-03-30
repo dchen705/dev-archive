@@ -7,6 +7,7 @@ cd server
 pipx install poetry
 poetry install
 poetry env activate
+fastapi dev
 ```
 Pinecone Setup
 ```
