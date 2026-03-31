@@ -12,18 +12,19 @@ class Database:
             id TEXT PRIMARY KEY,
             session_id TEXT,
             messages TEXT,
+            title TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       """)
       conn.commit()
 
-  def save_thread(self, thread_id: str, session_id: str, messages: list):
+  def save_thread(self, thread_id: str, session_id: str, thread_title: str, messages: list):
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute("""
-            INSERT INTO threads (id, session_id, messages)
-            VALUES (?, ?, ?)
+            INSERT INTO threads (id, session_id, title, messages)
+            VALUES (?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET messages = excluded.messages
-        """, (thread_id, session_id, json.dumps(messages)))
+        """, (thread_id, session_id, thread_title, json.dumps(messages)))
         conn.commit()
 
   def get_thread_messages(self, thread_id: str) -> list:
@@ -39,12 +40,13 @@ class Database:
             messages = messages[1:]
         return messages
 
-  def get_session_threads(self, session_id: str) -> list[int]:
+  def get_session_threads(self, session_id: str) -> list[str]:
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.execute(
-            "SELECT id, created_at FROM threads WHERE session_id = ? ORDER BY created_at DESC",
+            "SELECT id, title, created_at FROM threads WHERE session_id = ? ORDER BY created_at DESC",
             (session_id,)
         )
-        return [int(row[0]) for row in cursor.fetchall()]
+        
+        return [{"id": row[0], "title": row[1]} for row in cursor.fetchall()]
 
 db = Database()
