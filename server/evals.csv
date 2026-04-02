@@ -1,0 +1,95 @@
+Correctness,Relevance,Completeness,Query Type,User Query,History,Response
+,,,Project Discovery,What projects tackled problems related to observability?,,"Several projects have addressed problems related to observability, each focusing on different aspects and challenges associated with monitoring and understanding the internal state of systems. Here are a few notable ones:
+
+    Herald: This project emphasizes the importance of aggregating telemetry data (logs, metrics, and traces) into a centralized location for visualization and analysis. It outlines a solution involving data collection, processing, storage, and visualization, demonstrating a comprehensive approach to achieving observability [1][3].
+
+    Firefly: The introduction section focuses on how observability can help developers understand applications through the data generated during execution. The project explains the necessity for system instrumentation and the three types of telemetry data used to improve observability [2].
+
+    Vispyr: This project explores the broad definition of observability, highlighting how the ability to analyze telemetry data helps diagnose problems. It identifies metrics, traces, and logs as the essential components of observability, which allow developers to understand the health and performance of their systems [4].
+
+    Qmantis: It discusses observability as a means to measure and analyze a system's current state based on generated data. Qmantis focuses on how enhanced observability enables quicker root cause identification, facilitating effective troubleshooting and debugging [6].
+
+    Cascade: This project addresses observability specifically in the context of containerized applications, emphasizing the need for robust telemetry data to monitor and troubleshoot issues within cloud environments [8][10].
+
+    Arroyo: This project defines observability in terms of measuring system states through output data, classifying the pillars of observability as metrics, traces, and logs, and detailing how these components contribute to system diagnostics [9].
+
+These projects collectively advance the understanding of observability and propose solutions that tackle various challenges in monitoring and analyzing system behavior effectively.
+
+Sources:
+
+[1] Herald: https://herald-app.github.io/#case-study
+
+[2] Firefly: https://try-firefly.github.io/
+
+[4] Vispyr: https://www.vispyr.com/
+
+[6] Qmantis: https://qmantis.co/#case-study
+
+[8] Cascade: https://try-cascade.github.io/#case-study
+
+[9] Arroyo: https://www.arroyoframework.com/case-study.html"
+,,,Project Analysis,What problems did QMantis face? Describe their architecture? What future work can build of their solution?,,"QMantis, an observability solution designed specifically for GraphQL APIs, faced several challenges, particularly in linking metrics and traces effectively. The team aimed to enable developers to easily transition from spotting potential issues in metrics to examining detailed trace information, but they encountered complexities, notably with integrating Grafana Tempo for trace data storage. This requirement introduced additional architectural considerations, such as needing compatible object storage, creating a more complex system [1][9].
+Architecture of QMantis
+
+The QMantis architecture comprises two main components:
+
+    qmantis-express: This is an npm package containing a configured Express-GraphQL server. It is responsible for generating metrics and traces using OpenTelemetry SDKs [1][5].
+
+    qmantis-compose: This component facilitates the deployment of the QMantis architecture on user servers using Docker. It processes, exports, stores, and visualizes the generated telemetry data [1][2].
+
+The architecture is divided into four phases:
+
+    Generate: Metrics and traces are generated via the GraphQL server.
+    Export: Data is exported for processing and storage.
+    Store: The data is stored using Promscale or TimescaleDB, which are optimized for time-stamped data [4][5].
+    Visualize: Finally, Grafana is used for data visualization and analysis [1][4].
+
+Future Work
+
+To enhance QMantis further, the team has identified several avenues for future development:
+
+    Linking Metrics and Traces: They aim to improve the dashboard experience by connecting metrics with traces. This would involve refining the user interface to facilitate seamless navigation from metrics to underlying trace data, possibly leveraging new integrations with storage solutions compatible with Grafana Tempo [9][10].
+
+    Incorporating Alerts: They are considering implementing automated alerts for specific problems, which could reduce the need for constant dashboard monitoring and enable proactive issue resolution [3].
+
+    Expanding GraphQL Server Compatibility: There are plans to support additional GraphQL server types beyond the current express-graphql, which would allow greater flexibility for developers working with different Node.js frameworks [3][4].
+
+    Enhancing Metrics Visualization: Future iterations might include expanded metrics dashboards that provide deeper insights into operation efficiency and latency trends, improving the tool's utility for identifying and prioritizing performance issues [2][3].
+
+By pursuing these enhancements, QMantis can further solidify its role as a robust observability solution for GraphQL APIs, addressing existing challenges and adapting to evolving user needs.
+
+Sources:
+
+[1] Qmantis: https://qmantis.co/#case-study"
+,,,Multi-Project Analysis,Can these projects be grouped by major architectural categories?,,"Yes, these projects can be grouped by major architectural categories based on the information available in the references.
+
+    Architecture Overview:
+        Dendro: This project has a defined architecture split into four major conceptual sections [1].
+        Seamless: It addresses fundamental challenges and provides a high-level overview of its core architecture [5].
+
+    Video Transcoding Solutions:
+        Bento: It discusses existing video transcoding solutions, divided into customized in-house solutions and third-party commercial software [2].
+
+    Circuit-Breaking Architecture:
+        Tailside: It focuses on circuit-breaking functionality, detailing decisions around data emission, storage, and evaluation [3].
+
+    Existing Solutions Analysis:
+        Conifer: This project compares multi-node parallelization solutions, distinguishing between Software as a Service (SaaS) and in-house implementations [6].
+        Bubble: It analyzes existing solutions for dynamic frontend preview apps, categorizing them into features and services [9].
+
+    Deployment Strategies:
+        Aria: This project covers canary deployments, discussing various implementations and techniques for gradual traffic shifting [7].
+
+    Component-Based Architecture:
+        Lodge: It demonstrates a component-based infrastructure for shipping, transforming, storing, visualizing, and monitoring log data [10].
+
+In summary, these projects can be grouped into categories like architecture overview, video transcoding solutions, circuit-breaking architecture, existing solutions analysis, deployment strategies, and component-based architecture.
+
+Sources:
+
+[1] Dendro: https://getdendro.com/case-study
+
+[2] Bento: https://bento-video.github.io/"
+,,,Multi-Project Analysis,Can you identify common recurring categories of problems in these project?,,
+,,,Multi-Project Analysis,"What should I consider when designing a system that needs real-time data delivery, based on these case studies",,
+,,,Multi-Project Analysis,Can you list and explain instances when developers decided to build custom solutions versus using existing tools?,,
