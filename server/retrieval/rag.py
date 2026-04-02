@@ -1,19 +1,21 @@
 import os
-from pydoc import source_synopsis
 from dotenv import load_dotenv
 from openai import OpenAI
 from pinecone import Pinecone
 
 load_dotenv()
+
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-dense_index = Pinecone(api_key=os.getenv("PINECONE_API_KEY")).Index(os.getenv("PINECONE_INDEX_NAME"))
+pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+dense_index = pc.Index(os.getenv("PINECONE_INDEX_NAME"))
+
 PINECONE_INDEX_NAMESPACE = os.getenv("PINECONE_INDEX_NAMESPACE")
 MODEL = "gpt-4o-mini"
 
 def title_thread(query: str) -> str:
     prompt = f"""
     Generate a short, descriptive title for a conversation thread based on the user's initial message.
-    
+
     ### Requirements:
     - Maximum 5-7 words.
     - Use Title Case.
@@ -107,6 +109,23 @@ def extract_cited_urls(response_text: str, docs: list[dict]) -> list[dict]:
 
     return cited_sources
 
+def append_citations(response: str, citations: list[dict]) -> str:
+    if not citations:
+        return response
+    else:
+        sources = "\n\n".join(
+            f"[{c['ref_number']}] {c['project_name']}: {c['url']}"
+            for c in citations
+        )
+
+        response += f"""
+        \n\n--------
+        \n\nSources:
+        \n\n{sources}
+        """
+
+        return response
+
 
 def get_llm_response(history: list) -> str:
     response = client.responses.create(
@@ -131,15 +150,6 @@ to help query and analyze software engineering case studies."""
     response = get_llm_response(history)
     citations = extract_cited_urls(response, docs)
 
-    if citations:
-        sources = "\n\n".join(
-            f"[{c['ref_number']}] {c['project_name']}: {c['url']}"
-            for c in citations
-        )
-        response += f"""
-        \n\n--------
-        \n\nSources:
-        \n\n{sources}
-        """
+    response_with_citations = append_citations(response, citations)
 
-    return response
+    return response_with_citations

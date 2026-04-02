@@ -83,7 +83,7 @@ export function Footer({ input, isLoading, onInputChange, onSend }: FooterProps)
       <div className="input-wrapper">
         <textarea
           className="chat-input"
-          placeholder="Ask about architecture decisions or patterns across many software engineering case studies..."
+          placeholder="Search and ask questions about software engineering case studies..."
           rows={1}
           value={input}
           disabled={isLoading}

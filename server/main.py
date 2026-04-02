@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Cookie, Response, HTTPException
 from history.db import db
-from rag import title_thread, handle_rag_query
+from retrieval.rag import title_thread, handle_rag_query
 import uuid
 
 from pydantic import BaseModel
@@ -39,7 +39,7 @@ def save_query_and_response(body: MessageRequest, session_id: str = Cookie(defau
 
     if not session_id:
         raise HTTPException(status_code=401, detail="No session")
-    
+
     thread_messages = db.get_thread_messages(thread_id)
 
     if thread_id and not thread_messages:
