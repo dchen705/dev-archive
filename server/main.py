@@ -1,3 +1,9 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+from phoenix.otel import register
+register(project_name="dev-archive", batch=True, auto_instrument=True)
+
 from fastapi import FastAPI, Cookie, Response, HTTPException
 from history.db import db
 from retrieval.rag import title_thread, handle_rag_query

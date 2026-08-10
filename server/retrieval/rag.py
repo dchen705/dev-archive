@@ -65,6 +65,7 @@ def retrieve_docs(query: str, top_k: int = 10) -> list[dict]:
 def build_augmented_query(user_input: str, docs: list[dict]) -> str:
     references = ""
     for i, doc in enumerate(docs, 1):
+        print(f"\n{doc['chunk_text']}")
         references += (
             f"\n[{i}] Project: {doc['project_name']}"
             f"\nURL: {doc['url']}"
